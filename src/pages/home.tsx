@@ -29,40 +29,12 @@ const FadeIn = ({ children, delay = 0, className = "" }: { children: React.React
   </motion.div>
 );
 
-function useCountUp(target: number, duration = 2000) {
-  const [count, setCount] = useState(0);
-  const [hasStarted, setHasStarted] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, amount: 0.5 });
-
-  useEffect(() => {
-    if (inView && !hasStarted) {
-      setHasStarted(true);
-      let start = 0;
-      const step = target / (duration / 16);
-      const timer = setInterval(() => {
-        start += step;
-        if (start >= target) {
-          setCount(target);
-          clearInterval(timer);
-        } else {
-          setCount(Math.floor(start));
-        }
-      }, 16);
-      return () => clearInterval(timer);
-    }
-  }, [inView, target, duration, hasStarted]);
-
-  return { count, ref };
-}
-
 function StatCounter({ value, suffix, prefix = "", label, decimals = 0 }: {
   value: number; suffix: string; prefix?: string; label: string; decimals?: number;
 }) {
-  const { count, ref } = useCountUp(value);
-  const display = decimals > 0 ? (count / Math.pow(10, decimals)).toFixed(1) : count.toLocaleString();
+  const display = decimals > 0 ? (value / Math.pow(10, decimals)).toFixed(1) : value.toLocaleString();
   return (
-    <div ref={ref} className="text-center">
+    <div className="text-center">
       <div className="text-4xl lg:text-5xl font-bold mb-2">
         <span>{prefix}</span>
         <span>{display}</span>
