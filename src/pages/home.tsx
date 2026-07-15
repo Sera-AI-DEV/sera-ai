@@ -11,6 +11,12 @@ import { Card, CardContent } from "@/components/ui/card";
 import heroWaves from "../assets/hero-waves.png";
 import receptionist from "../assets/receptionist.png";
 
+const CALENDLY_URL = "https://calendly.com/aaron-seraai/sera-ai-demo";
+
+function openCalendly() {
+  (window as any).Calendly?.initPopupWidget({ url: CALENDLY_URL });
+}
+
 const FadeIn = ({ children, delay = 0, className = "" }: { children: React.ReactNode; delay?: number; className?: string }) => (
   <motion.div
     className={className}
@@ -223,6 +229,7 @@ function ROICalculator() {
 
           <Button
             size="lg"
+            onClick={openCalendly}
             className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold h-13 rounded-xl mt-2"
           >
             Book a Demo — Lock In This Revenue
@@ -286,106 +293,26 @@ const SOFTWARE_LOGOS = [
 ];
 
 function DemoForm() {
-  const [form, setForm] = useState({ name: "", clinic: "", email: "", phone: "" });
-  const [submitted, setSubmitted] = useState(false);
-  const [loading, setLoading] = useState(false);
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!form.name || !form.email) return;
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-      setSubmitted(true);
-    }, 1200);
-  };
-
-  if (submitted) {
-    return (
-      <motion.div
-        initial={{ opacity: 0, scale: 0.96 }}
-        animate={{ opacity: 1, scale: 1 }}
-        className="text-center py-12"
-      >
-        <div className="w-16 h-16 rounded-full bg-primary/10 border border-primary/30 flex items-center justify-center mx-auto mb-6">
-          <CheckCircle2 className="w-8 h-8 text-primary" />
-        </div>
-        <h3 className="text-2xl font-bold mb-3">You're on the list!</h3>
-        <p className="text-muted-foreground max-w-sm mx-auto">
-          We'll be in touch within one business day to schedule your personalised demo and walk you through Sera for your clinic.
-        </p>
-      </motion.div>
-    );
-  }
-
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <div className="grid sm:grid-cols-2 gap-4">
-        <div>
-          <label className="text-sm font-medium text-foreground block mb-1.5">Your name *</label>
-          <input
-            required
-            type="text"
-            placeholder="Dr. Jane Smith"
-            value={form.name}
-            onChange={(e) => setForm({ ...form, name: e.target.value })}
-            className="w-full px-4 py-3 rounded-xl bg-secondary/40 border border-border/60 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary/50 transition-all"
-          />
-        </div>
-        <div>
-          <label className="text-sm font-medium text-foreground block mb-1.5">Clinic name</label>
-          <input
-            type="text"
-            placeholder="Crown Vets Prahran"
-            value={form.clinic}
-            onChange={(e) => setForm({ ...form, clinic: e.target.value })}
-            className="w-full px-4 py-3 rounded-xl bg-secondary/40 border border-border/60 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary/50 transition-all"
-          />
-        </div>
+    <div className="flex flex-col items-center justify-center text-center py-8 h-full">
+      <div className="w-16 h-16 rounded-full bg-primary/10 border border-primary/30 flex items-center justify-center mb-6">
+        <CalendarCheck className="w-8 h-8 text-primary" />
       </div>
-      <div className="grid sm:grid-cols-2 gap-4">
-        <div>
-          <label className="text-sm font-medium text-foreground block mb-1.5">Email address *</label>
-          <input
-            required
-            type="email"
-            placeholder="you@yourclinic.com.au"
-            value={form.email}
-            onChange={(e) => setForm({ ...form, email: e.target.value })}
-            className="w-full px-4 py-3 rounded-xl bg-secondary/40 border border-border/60 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary/50 transition-all"
-          />
-        </div>
-        <div>
-          <label className="text-sm font-medium text-foreground block mb-1.5">Phone number</label>
-          <input
-            type="tel"
-            placeholder="04xx xxx xxx"
-            value={form.phone}
-            onChange={(e) => setForm({ ...form, phone: e.target.value })}
-            className="w-full px-4 py-3 rounded-xl bg-secondary/40 border border-border/60 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary/50 transition-all"
-          />
-        </div>
-      </div>
+      <h3 className="text-2xl font-bold mb-3">Pick a time that works for you</h3>
+      <p className="text-muted-foreground leading-relaxed mb-8 max-w-sm">
+        No forms, no back and forth — just grab a slot that suits your clinic's schedule.
+      </p>
       <Button
-        type="submit"
-        disabled={loading}
+        onClick={openCalendly}
         size="lg"
-        className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold h-13 rounded-xl text-base mt-2 disabled:opacity-70"
+        className="w-full max-w-xs bg-primary hover:bg-primary/90 text-primary-foreground font-semibold h-13 rounded-xl text-base"
       >
-        {loading ? (
-          <span className="flex items-center gap-2">
-            <motion.span animate={{ rotate: 360 }} transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-              className="inline-block w-4 h-4 border-2 border-white border-t-transparent rounded-full" />
-            Sending...
-          </span>
-        ) : (
-          <span className="flex items-center gap-2">
-            Book My Free Demo <ChevronRight className="w-5 h-5" />
-          </span>
-        )}
+        <span className="flex items-center gap-2">
+          Book My Free Demo <ChevronRight className="w-5 h-5" />
+        </span>
       </Button>
-      <p className="text-xs text-muted-foreground text-center">No lock-in contracts. Setup within 48 hours. We'll call you.</p>
-    </form>
+      <p className="text-xs text-muted-foreground text-center mt-4">No lock-in contracts. Setup within 48 hours.</p>
+    </div>
   );
 }
 
