@@ -296,7 +296,7 @@ function DemoForm() {
   const calendlyRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const styledUrl = `${CALENDLY_URL}?background_color=0d1117&text_color=ffffff&primary_color=00c896&hide_gdpr_banner=1`;
+    const styledUrl = `${CALENDLY_URL}?background_color=ffffff&text_color=0d1117&primary_color=00c896&hide_gdpr_banner=1`;
 
     if ((window as any).Calendly && calendlyRef.current) {
       calendlyRef.current.innerHTML = "";
@@ -310,7 +310,7 @@ function DemoForm() {
   return (
     <div
       ref={calendlyRef}
-      className="rounded-2xl overflow-hidden border border-border/50"
+      className="rounded-2xl overflow-hidden border border-border/50 bg-white"
       style={{ minWidth: "320px", height: "700px" }}
     />
   );
@@ -435,9 +435,12 @@ export default function Home() {
       {/* — 1. ANIMATED STAT COUNTERS — */}
       <section className="py-16 px-6 border-y border-border/40 bg-secondary/10">
         <div className="max-w-3xl mx-auto grid grid-cols-1 sm:grid-cols-3 gap-8 divide-x-0 sm:divide-x divide-border/30">
-          <StatCounter value={500} suffix="+" label="Calls handled / month" />
-          <StatCounter value={98} suffix="%" label="Caller satisfaction" />
-          <StatCounter value={1} suffix=" day" prefix="<" label="Average setup time" />
+          <StatCounter value={300} suffix="+" label="Calls handled per month" />
+          <StatCounter value={65} suffix="%" label="Missed calls converted to bookings" />
+          <div className="text-center">
+            <div className="text-4xl lg:text-5xl font-bold mb-2">24/7</div>
+            <div className="text-muted-foreground text-sm font-medium uppercase tracking-wider">Always answering</div>
+          </div>
         </div>
       </section>
 
@@ -729,7 +732,7 @@ export default function Home() {
               <div className="text-sm font-medium text-primary uppercase tracking-widest mb-3">Book a Free Demo</div>
               <h2 className="text-3xl lg:text-4xl font-bold mb-4">Ready to hire your new best receptionist?</h2>
               <p className="text-muted-foreground leading-relaxed max-w-2xl mx-auto mb-6">
-                Book a personalised 20-minute demo and see Sera answer calls for your specific clinic — live, in real time. Setup takes less than 48 hours. No lock-in contracts.
+                Book a personalised 15-minute demo and see Sera answer calls for your specific clinic — live, in real time. Setup takes less than 48 hours. No lock-in contracts.
               </p>
               <div className="flex flex-wrap justify-center gap-x-6 gap-y-2">
                 {[
