@@ -29,14 +29,14 @@ const FadeIn = ({ children, delay = 0, className = "" }: { children: React.React
   </motion.div>
 );
 
-function useCountUp(target: number, duration = 2000, startOnView = true) {
+function useCountUp(target: number, duration = 2000) {
   const [count, setCount] = useState(0);
   const [hasStarted, setHasStarted] = useState(false);
-  const ref = useRef<HTMLSpanElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-50px" });
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { once: true, amount: 0.5 });
 
   useEffect(() => {
-    if ((!startOnView || inView) && !hasStarted) {
+    if (inView && !hasStarted) {
       setHasStarted(true);
       let start = 0;
       const step = target / (duration / 16);
@@ -51,7 +51,7 @@ function useCountUp(target: number, duration = 2000, startOnView = true) {
       }, 16);
       return () => clearInterval(timer);
     }
-  }, [inView, target, duration, startOnView, hasStarted]);
+  }, [inView, target, duration, hasStarted]);
 
   return { count, ref };
 }
@@ -62,10 +62,10 @@ function StatCounter({ value, suffix, prefix = "", label, decimals = 0 }: {
   const { count, ref } = useCountUp(value);
   const display = decimals > 0 ? (count / Math.pow(10, decimals)).toFixed(1) : count.toLocaleString();
   return (
-    <div className="text-center">
+    <div ref={ref} className="text-center">
       <div className="text-4xl lg:text-5xl font-bold mb-2">
         <span>{prefix}</span>
-        <span ref={ref}>{display}</span>
+        <span>{display}</span>
         <span className="text-primary">{suffix}</span>
       </div>
       <div className="text-muted-foreground text-sm font-medium uppercase tracking-wider">{label}</div>
