@@ -293,26 +293,26 @@ const SOFTWARE_LOGOS = [
 ];
 
 function DemoForm() {
+  const calendlyRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const styledUrl = `${CALENDLY_URL}?background_color=0d1117&text_color=ffffff&primary_color=00c896&hide_gdpr_banner=1`;
+
+    if ((window as any).Calendly && calendlyRef.current) {
+      calendlyRef.current.innerHTML = "";
+      (window as any).Calendly.initInlineWidget({
+        url: styledUrl,
+        parentElement: calendlyRef.current,
+      });
+    }
+  }, []);
+
   return (
-    <div className="flex flex-col items-center justify-center text-center py-8 h-full">
-      <div className="w-16 h-16 rounded-full bg-primary/10 border border-primary/30 flex items-center justify-center mb-6">
-        <CalendarCheck className="w-8 h-8 text-primary" />
-      </div>
-      <h3 className="text-2xl font-bold mb-3">Pick a time that works for you</h3>
-      <p className="text-muted-foreground leading-relaxed mb-8 max-w-sm">
-        No forms, no back and forth — just grab a slot that suits your clinic's schedule.
-      </p>
-      <Button
-        onClick={openCalendly}
-        size="lg"
-        className="w-full max-w-xs bg-primary hover:bg-primary/90 text-primary-foreground font-semibold h-13 rounded-xl text-base"
-      >
-        <span className="flex items-center gap-2">
-          Book My Free Demo <ChevronRight className="w-5 h-5" />
-        </span>
-      </Button>
-      <p className="text-xs text-muted-foreground text-center mt-4">No lock-in contracts. Setup within 48 hours.</p>
-    </div>
+    <div
+      ref={calendlyRef}
+      className="rounded-2xl overflow-hidden border border-border/50"
+      style={{ minWidth: "320px", height: "700px" }}
+    />
   );
 }
 
@@ -721,35 +721,34 @@ export default function Home() {
         </div>
       </section>
 
-      {/* — 7. DEMO BOOKING FORM CTA — */}
+      {/* — 7. DEMO BOOKING SECTION — */}
       <section id="demo" className="py-24 px-6 bg-secondary/20 border-t border-border/50">
-        <div className="max-w-5xl mx-auto">
+        <div className="max-w-4xl mx-auto">
           <FadeIn>
-            <div className="grid lg:grid-cols-2 gap-12 items-start bg-background border border-border/50 rounded-3xl p-10 md:p-14 shadow-2xl relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-80 h-80 bg-primary/10 blur-[120px] rounded-full pointer-events-none" />
-              <div className="relative z-10">
-                <div className="text-sm font-medium text-primary uppercase tracking-widest mb-3">Book a Free Demo</div>
-                <h2 className="text-3xl lg:text-4xl font-bold mb-4">Ready to hire your new best receptionist?</h2>
-                <p className="text-muted-foreground leading-relaxed mb-8">
-                  Book a personalised 20-minute demo and see Sera answer calls for your specific clinic — live, in real time. Setup takes less than 48 hours. No lock-in contracts.
-                </p>
-                <div className="space-y-3">
-                  {[
-                    "Live demo tailored to your clinic",
-                    "Setup within 48 hours of signing",
-                    "No lock-in — cancel any time",
-                    "We handle all the onboarding for you",
-                  ].map((point) => (
-                    <div key={point} className="flex items-center gap-3 text-sm text-muted-foreground">
-                      <CheckCircle2 className="w-4 h-4 text-primary flex-shrink-0" />
-                      {point}
-                    </div>
-                  ))}
-                </div>
+            <div className="text-center mb-10">
+              <div className="text-sm font-medium text-primary uppercase tracking-widest mb-3">Book a Free Demo</div>
+              <h2 className="text-3xl lg:text-4xl font-bold mb-4">Ready to hire your new best receptionist?</h2>
+              <p className="text-muted-foreground leading-relaxed max-w-2xl mx-auto mb-6">
+                Book a personalised 20-minute demo and see Sera answer calls for your specific clinic — live, in real time. Setup takes less than 48 hours. No lock-in contracts.
+              </p>
+              <div className="flex flex-wrap justify-center gap-x-6 gap-y-2">
+                {[
+                  "Live demo tailored to your clinic",
+                  "Setup within 48 hours of signing",
+                  "No lock-in — cancel any time",
+                  "We handle all the onboarding for you",
+                ].map((point) => (
+                  <div key={point} className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <CheckCircle2 className="w-4 h-4 text-primary flex-shrink-0" />
+                    {point}
+                  </div>
+                ))}
               </div>
-              <div className="relative z-10">
-                <DemoForm />
-              </div>
+            </div>
+          </FadeIn>
+          <FadeIn delay={0.15}>
+            <div className="bg-background border border-border/50 rounded-3xl p-4 md:p-6 shadow-2xl">
+              <DemoForm />
             </div>
           </FadeIn>
         </div>
