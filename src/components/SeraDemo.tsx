@@ -100,7 +100,7 @@ export default function SeraDemo() {
   const startCall = async () => {
     if (!vapiRef.current || callStatus !== "idle") return;
     setCallStatus("connecting");
-    const nameToUse = clinicName.trim() || "Bondi Demo Vet";
+    const nameToUse = clinicName.trim() || "Sydney Demo Vet";
     try {
       await vapiRef.current.start(ASSISTANT_ID, {
         variableValues: { clinic_name: nameToUse },
@@ -294,18 +294,30 @@ export default function SeraDemo() {
 
               <div className="flex items-center justify-center gap-4 w-full mt-1">
                 {callStatus === "idle" && (
-                  <div className="w-full flex flex-col gap-3">
+                  <div className="w-full flex flex-col gap-2">
+                    <div className="flex items-center justify-center gap-1.5 mb-0.5">
+                      <span className="relative flex h-1.5 w-1.5">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75" />
+                        <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-primary" />
+                      </span>
+                      <span className="text-xs font-semibold text-primary uppercase tracking-wide">
+                        Try it with your clinic's name
+                      </span>
+                    </div>
                     <input
                       type="text"
                       value={clinicName}
                       onChange={(e) => setClinicName(e.target.value)}
-                      placeholder="Your clinic name (optional)"
+                      placeholder="e.g. Pawsome Vet Clinic"
                       maxLength={40}
-                      className="w-full px-4 py-2.5 rounded-xl bg-secondary/40 border border-border/60 text-sm text-foreground placeholder:text-muted-foreground text-center focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary/50 transition-all"
+                      className="w-full px-4 py-3 rounded-xl bg-primary/5 border-2 border-primary/40 text-sm text-foreground placeholder:text-muted-foreground/70 text-center font-medium focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition-all shadow-sm shadow-primary/10"
                     />
+                    <p className="text-[11px] text-muted-foreground/70 text-center -mt-0.5">
+                      Leave blank to hear our demo clinic instead
+                    </p>
                     <button
                       onClick={startCall}
-                      className="flex-1 flex items-center justify-center gap-2 bg-primary hover:bg-primary/90 text-primary-foreground font-semibold py-3.5 rounded-2xl transition-colors shadow-lg shadow-primary/25 cursor-pointer"
+                      className="flex-1 flex items-center justify-center gap-2 bg-primary hover:bg-primary/90 text-primary-foreground font-semibold py-3.5 rounded-2xl transition-colors shadow-lg shadow-primary/25 cursor-pointer mt-1"
                     >
                       <PhoneCall className="w-5 h-5" />
                       Start Call
