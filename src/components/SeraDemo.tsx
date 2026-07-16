@@ -22,9 +22,11 @@ export default function SeraDemo() {
   const [volumeLevel, setVolumeLevel] = useState(0);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [suggestionIndex, setSuggestionIndex] = useState(0);
+  const [secondsLeft, setSecondsLeft] = useState(60);
   const vapiRef = useRef<Vapi | null>(null);
   const animFrameRef = useRef<number | null>(null);
   const suggestionTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const countdownTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   useEffect(() => {
     const vapi = new Vapi(VAPI_PUBLIC_KEY);
@@ -75,6 +77,22 @@ export default function SeraDemo() {
     }
     return () => {
       if (suggestionTimerRef.current) clearInterval(suggestionTimerRef.current);
+    };
+  }, [callStatus]);
+
+  // Countdown timer — tracks the 60 second demo limit
+  useEffect(() => {
+    if (callStatus === "active") {
+      setSecondsLeft(60);
+      countdownTimerRef.current = setInterval(() => {
+        setSecondsLeft((s) => (s > 0 ? s - 1 : 0));
+      }, 1000);
+    } else {
+      if (countdownTimerRef.current) clearInterval(countdownTimerRef.current);
+      setSecondsLeft(60);
+    }
+    return () => {
+      if (countdownTimerRef.current) clearInterval(countdownTimerRef.current);
     };
   }, [callStatus]);
 
@@ -306,9 +324,15 @@ export default function SeraDemo() {
                 )}
               </div>
 
-              <p className="text-xs text-muted-foreground/60 text-center pb-1">
+              <p className={`text-xs text-center pb-1 transition-colors ${
+                callStatus === "active" && secondsLeft <= 10
+                  ? "text-destructive font-medium"
+                  : "text-muted-foreground/60"
+              }`}>
                 {callStatus === "active"
-                  ? "Demo calls are limited to 60 seconds"
+                  ? `Demo call — ${secondsLeft}s remaining`
+                  : callStatus === "idle"
+                  ? "Free 60 second demo call"
                   : "Your microphone will be requested when the call starts"}
               </p>
             </div>
