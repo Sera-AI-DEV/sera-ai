@@ -1,10 +1,17 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Mic, MicOff, PhoneCall, PhoneOff, X, Volume2 } from "lucide-react";
+import { Mic, MicOff, PhoneCall, PhoneOff, X, Volume2, Sparkles } from "lucide-react";
 import Vapi from "@vapi-ai/web";
 
 const VAPI_PUBLIC_KEY = "d78adb77-7a45-4ada-b59b-5ea2cf6613cf";
 const ASSISTANT_ID = "121468e2-5cc1-473b-9ed0-be272f3bc7e4";
+
+const SUGGESTIONS = [
+  "Try asking: \"What are your opening hours?\"",
+  "Try asking: \"How much is a consultation?\"",
+  "Try asking: \"Do you have availability today?\"",
+  "Try asking: \"Can I book my dog in for a check-up?\"",
+];
 
 type CallStatus = "idle" | "connecting" | "active" | "ending";
 
@@ -14,8 +21,10 @@ export default function SeraDemo() {
   const [isMuted, setIsMuted] = useState(false);
   const [volumeLevel, setVolumeLevel] = useState(0);
   const [isSpeaking, setIsSpeaking] = useState(false);
+  const [suggestionIndex, setSuggestionIndex] = useState(0);
   const vapiRef = useRef<Vapi | null>(null);
   const animFrameRef = useRef<number | null>(null);
+  const suggestionTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   useEffect(() => {
     const vapi = new Vapi(VAPI_PUBLIC_KEY);
@@ -53,6 +62,21 @@ export default function SeraDemo() {
       vapi.stop();
     };
   }, []);
+
+  // Rotate suggestion bubbles every 4 seconds while the call is active
+  useEffect(() => {
+    if (callStatus === "active") {
+      setSuggestionIndex(0);
+      suggestionTimerRef.current = setInterval(() => {
+        setSuggestionIndex((i) => (i + 1) % SUGGESTIONS.length);
+      }, 4000);
+    } else {
+      if (suggestionTimerRef.current) clearInterval(suggestionTimerRef.current);
+    }
+    return () => {
+      if (suggestionTimerRef.current) clearInterval(suggestionTimerRef.current);
+    };
+  }, [callStatus]);
 
   const startCall = async () => {
     if (!vapiRef.current || callStatus !== "idle") return;
@@ -217,6 +241,25 @@ export default function SeraDemo() {
                 )}
               </div>
 
+              {/* Rotating suggestion bubble — only shows during an active call */}
+              <AnimatePresence mode="wait">
+                {callStatus === "active" && (
+                  <motion.div
+                    key={suggestionIndex}
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -8 }}
+                    transition={{ duration: 0.35 }}
+                    className="w-full flex items-center gap-2 bg-primary/10 border border-primary/20 rounded-full px-4 py-2.5"
+                  >
+                    <Sparkles className="w-4 h-4 text-primary flex-shrink-0" />
+                    <span className="text-xs text-foreground leading-snug">
+                      {SUGGESTIONS[suggestionIndex]}
+                    </span>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
               {callStatus === "active" && (
                 <div className="w-full bg-secondary/30 rounded-full h-1.5 overflow-hidden">
                   <motion.div
@@ -264,7 +307,9 @@ export default function SeraDemo() {
               </div>
 
               <p className="text-xs text-muted-foreground/60 text-center pb-1">
-                Your microphone will be requested when the call starts
+                {callStatus === "active"
+                  ? "Demo calls are limited to 60 seconds"
+                  : "Your microphone will be requested when the call starts"}
               </p>
             </div>
           </motion.div>
