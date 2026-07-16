@@ -288,17 +288,34 @@ function DemoForm() {
   );
 }
 
-function FAQItem({ question, answer }: { question: string; answer: string }) {
+function FAQItem({ question, answer, index }: { question: string; answer: string; index: number }) {
   const [open, setOpen] = useState(false);
   return (
-    <div className="border border-border/50 rounded-2xl overflow-hidden">
+    <div
+      className={`rounded-2xl overflow-hidden border transition-all duration-300 ${
+        open
+          ? "border-primary/50 bg-primary/[0.04] shadow-[0_0_25px_rgba(0,200,150,0.12)]"
+          : "border-border/50 bg-secondary/10 hover:border-primary/25"
+      }`}
+    >
       <button
         onClick={() => setOpen((o) => !o)}
-        className="w-full flex items-center justify-between px-6 py-5 text-left hover:bg-secondary/30 transition-colors cursor-pointer"
+        className="w-full flex items-center gap-4 px-6 py-5 text-left transition-colors cursor-pointer"
       >
-        <span className="font-medium pr-4">{question}</span>
+        <span
+          className={`flex-shrink-0 w-7 h-7 rounded-lg flex items-center justify-center text-xs font-bold transition-all duration-300 ${
+            open
+              ? "bg-gradient-to-br from-primary to-blue-500 text-white shadow-[0_0_15px_rgba(0,200,150,0.4)]"
+              : "bg-secondary/60 border border-border/50 text-muted-foreground"
+          }`}
+        >
+          {String(index + 1).padStart(2, "0")}
+        </span>
+        <span className={`font-semibold pr-4 flex-1 transition-colors ${open ? "text-primary" : "text-foreground"}`}>
+          {question}
+        </span>
         <motion.div animate={{ rotate: open ? 180 : 0 }} transition={{ duration: 0.25 }} className="flex-shrink-0">
-          <ChevronDown className="w-5 h-5 text-muted-foreground" />
+          <ChevronDown className={`w-5 h-5 transition-colors ${open ? "text-primary" : "text-muted-foreground"}`} />
         </motion.div>
       </button>
       <AnimatePresence initial={false}>
@@ -310,12 +327,116 @@ function FAQItem({ question, answer }: { question: string; answer: string }) {
             transition={{ duration: 0.3, ease: "easeInOut" }}
             className="overflow-hidden"
           >
-            <div className="px-6 pb-6 text-muted-foreground leading-relaxed border-t border-border/30 pt-4">
-              {answer}
+            <div className="px-6 pb-6 pl-[4.25rem]">
+              <p className="text-foreground/80 leading-relaxed">{answer}</p>
             </div>
           </motion.div>
         )}
       </AnimatePresence>
+    </div>
+  );
+}
+
+const JOURNEY_STEPS = [
+  { n: "1", title: "Keep Your Number", desc: "Calls simply forward to Sera when your team doesn't answer (typically after 3 rings)." },
+  { n: "2", title: "Sera Answers", desc: "Patients hear a professional Aussie receptionist who knows the clinic inside out." },
+  { n: "3", title: "Instant Updates", desc: "Sera books straight into the calendar and the summary lands in your inbox immediately." },
+];
+
+function JourneySteps() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const inView = useInView(containerRef, { once: true, amount: 0.4 });
+  const [activeStep, setActiveStep] = useState(-1);
+  const [segmentFilled, setSegmentFilled] = useState([false, false]);
+
+  useEffect(() => {
+    if (!inView) return;
+    const timers = [
+      setTimeout(() => setActiveStep(0), 200),
+      setTimeout(() => setSegmentFilled((p) => [true, p[1]]), 700),
+      setTimeout(() => setActiveStep(1), 1700),
+      setTimeout(() => setSegmentFilled((p) => [p[0], true]), 2200),
+      setTimeout(() => setActiveStep(2), 3200),
+    ];
+    return () => timers.forEach(clearTimeout);
+  }, [inView]);
+
+  return (
+    <div ref={containerRef} className="relative">
+      {/* Base track line */}
+      <div className="hidden md:block absolute top-12 left-[16.67%] right-[16.67%] h-[2px] bg-border/40" />
+
+      {/* Segment 1: step 1 -> step 2, fills with a traveling glow */}
+      <div className="hidden md:block absolute top-12 left-[16.67%] w-[33.33%] h-[2px] overflow-visible">
+        <motion.div
+          className="h-full bg-gradient-to-r from-primary to-blue-400"
+          initial={{ width: "0%" }}
+          animate={{ width: segmentFilled[0] ? "100%" : "0%" }}
+          transition={{ duration: 1, ease: "easeInOut" }}
+        />
+        {segmentFilled[0] && !segmentFilled[1] && (
+          <motion.div
+            className="absolute top-1/2 w-3 h-3 -mt-1.5 rounded-full bg-primary shadow-[0_0_12px_4px_rgba(0,200,150,0.6)]"
+            initial={{ left: "0%" }}
+            animate={{ left: "100%" }}
+            transition={{ duration: 1, ease: "easeInOut" }}
+          />
+        )}
+      </div>
+
+      {/* Segment 2: step 2 -> step 3, fills with a traveling glow */}
+      <div className="hidden md:block absolute top-12 left-1/2 w-[33.33%] h-[2px] overflow-visible">
+        <motion.div
+          className="h-full bg-gradient-to-r from-primary to-blue-400"
+          initial={{ width: "0%" }}
+          animate={{ width: segmentFilled[1] ? "100%" : "0%" }}
+          transition={{ duration: 1, ease: "easeInOut" }}
+        />
+        {segmentFilled[1] && (
+          <motion.div
+            className="absolute top-1/2 w-3 h-3 -mt-1.5 rounded-full bg-primary shadow-[0_0_12px_4px_rgba(0,200,150,0.6)]"
+            initial={{ left: "0%" }}
+            animate={{ left: "100%" }}
+            transition={{ duration: 1, ease: "easeInOut" }}
+            onAnimationComplete={() => {}}
+          />
+        )}
+      </div>
+
+      <div className="grid md:grid-cols-3 gap-12 text-center relative z-10">
+        {JOURNEY_STEPS.map((step, i) => {
+          const isActive = activeStep >= i;
+          return (
+            <div key={i}>
+              <div className="relative w-24 h-24 mx-auto mb-6">
+                {isActive && (
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.7 }}
+                    animate={{ opacity: 0.3, scale: 1 }}
+                    transition={{ duration: 0.5 }}
+                    className="absolute inset-0 rounded-full bg-gradient-to-br from-primary to-blue-500 blur-xl"
+                  />
+                )}
+                <div
+                  className={`relative w-24 h-24 rounded-full flex items-center justify-center border-2 transition-all duration-500 ${
+                    isActive
+                      ? "bg-gradient-to-br from-primary to-blue-500 border-primary shadow-[0_0_30px_rgba(0,200,150,0.5)]"
+                      : "bg-secondary/40 border-border/50"
+                  }`}
+                >
+                  <span className={`text-3xl font-bold transition-colors duration-500 ${isActive ? "text-white" : "text-muted-foreground"}`}>
+                    {step.n}
+                  </span>
+                </div>
+              </div>
+              <h3 className={`text-xl font-semibold mb-3 transition-colors duration-500 ${isActive ? "text-foreground" : "text-muted-foreground"}`}>
+                {step.title}
+              </h3>
+              <p className="text-muted-foreground">{step.desc}</p>
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 }
@@ -583,27 +704,7 @@ export default function Home() {
               <p className="text-lg text-muted-foreground">No new numbers. No confusing setups.</p>
             </div>
           </FadeIn>
-          <div className="relative">
-            <div className="hidden md:block absolute top-12 left-[16%] right-[16%] h-[2px] bg-gradient-to-r from-primary/60 via-primary/30 to-primary/60" />
-            <div className="grid md:grid-cols-3 gap-12 text-center relative z-10">
-              {[
-                { n: "1", title: "Keep Your Number", desc: "Calls simply forward to Sera when your team doesn't answer (typically after 3 rings)." },
-                { n: "2", title: "Sera Answers", desc: "Patients hear a professional Aussie receptionist who knows the clinic inside out." },
-                { n: "3", title: "Instant Updates", desc: "Sera books straight into the calendar and the summary lands in your inbox immediately." },
-              ].map((step, i) => (
-                <FadeIn key={i} delay={i * 0.1}>
-                  <div className="relative w-24 h-24 mx-auto mb-6">
-                    <div className="absolute inset-0 rounded-full bg-gradient-to-br from-primary to-blue-500 opacity-20 blur-xl animate-pulse" />
-                    <div className="relative w-24 h-24 rounded-full bg-secondary/40 border-2 border-primary/40 shadow-[0_0_25px_rgba(0,200,150,0.25)] flex items-center justify-center">
-                      <span className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-br from-primary to-blue-400">{step.n}</span>
-                    </div>
-                  </div>
-                  <h3 className="text-xl font-semibold mb-3">{step.title}</h3>
-                  <p className="text-muted-foreground">{step.desc}</p>
-                </FadeIn>
-              ))}
-            </div>
-          </div>
+          <JourneySteps />
         </div>
       </section>
 
@@ -694,7 +795,7 @@ export default function Home() {
           <FadeIn delay={0.1}>
             <div className="space-y-3">
               {FAQS.map((faq, i) => (
-                <FAQItem key={i} question={faq.q} answer={faq.a} />
+                <FAQItem key={i} question={faq.q} answer={faq.a} index={i} />
               ))}
             </div>
           </FadeIn>
