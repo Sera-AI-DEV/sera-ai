@@ -325,9 +325,18 @@ export default function Home() {
   const y = useTransform(scrollYProgress, [0, 1], [0, -100]);
 
   return (
-    <div className="min-h-screen bg-background text-foreground font-sans overflow-x-hidden selection:bg-primary/30">
+    <div className="min-h-screen bg-background text-foreground font-sans overflow-x-hidden selection:bg-primary/30 relative">
+      {/* Subtle dot-grid texture across the whole page */}
+      <div
+        className="fixed inset-0 pointer-events-none opacity-[0.15] z-0"
+        style={{
+          backgroundImage: "radial-gradient(circle, rgba(255,255,255,0.4) 1px, transparent 1px)",
+          backgroundSize: "28px 28px",
+        }}
+      />
+
       {/* Sticky Nav */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border/50">
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-primary/10 shadow-[0_1px_20px_rgba(0,200,150,0.08)]">
         <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-blue-500 flex items-center justify-center">
@@ -417,8 +426,9 @@ export default function Home() {
       </section>
 
       {/* The Problem Section */}
-      <section className="py-24 px-6 bg-secondary/30 border-b border-border/50">
-        <div className="max-w-7xl mx-auto">
+      <section className="py-24 px-6 bg-secondary/30 border-b border-border/50 relative overflow-hidden">
+        <div className="absolute top-[10%] right-[5%] w-[35%] h-[35%] bg-blue-500/10 blur-[100px] rounded-full pointer-events-none" />
+        <div className="max-w-7xl mx-auto relative z-10">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div>
               <FadeIn>
@@ -478,8 +488,10 @@ export default function Home() {
       </section>
 
       {/* Features Grid */}
-      <section className="py-24 px-6 relative">
-        <div className="max-w-7xl mx-auto">
+      <section className="py-24 px-6 relative overflow-hidden">
+        <div className="absolute top-[5%] left-[-5%] w-[30%] h-[30%] bg-primary/10 blur-[110px] rounded-full pointer-events-none" />
+        <div className="absolute bottom-[10%] right-[0%] w-[25%] h-[25%] bg-blue-500/10 blur-[100px] rounded-full pointer-events-none" />
+        <div className="max-w-7xl mx-auto relative z-10">
           <FadeIn>
             <div className="text-center max-w-3xl mx-auto mb-16">
               <h2 className="text-3xl lg:text-5xl font-bold mb-6">She sounds like she works there.</h2>
@@ -498,15 +510,18 @@ export default function Home() {
               { icon: LineChart, title: "Unlocks Revenue", desc: "Captures every lead. No voicemails, no hangups. Every call is treated like the valuable lead it is." },
             ].map((feature, i) => (
               <FadeIn key={i} delay={i * 0.08}>
-                <Card className="bg-secondary/20 border-border/50 hover:border-primary/50 transition-colors duration-300 h-full">
-                  <CardContent className="p-8">
-                    <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-6">
-                      <feature.icon className="w-6 h-6 text-primary" />
+                <div className="group relative h-full rounded-2xl p-[1px] bg-gradient-to-b from-border/60 to-transparent hover:from-primary/60 hover:to-blue-500/20 transition-all duration-300">
+                  <div className="relative h-full rounded-2xl bg-secondary/30 backdrop-blur-sm p-8 overflow-hidden">
+                    <div className="absolute -top-10 -right-10 w-32 h-32 bg-primary/0 group-hover:bg-primary/10 blur-2xl rounded-full transition-all duration-500" />
+                    <div className="relative z-10">
+                      <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary/20 to-blue-500/10 border border-primary/20 flex items-center justify-center mb-6 shadow-[0_0_20px_rgba(0,200,150,0.15)] group-hover:shadow-[0_0_30px_rgba(0,200,150,0.3)] transition-shadow duration-300">
+                        <feature.icon className="w-6 h-6 text-primary" />
+                      </div>
+                      <h3 className="text-xl font-semibold mb-3">{feature.title}</h3>
+                      <p className="text-muted-foreground leading-relaxed">{feature.desc}</p>
                     </div>
-                    <h3 className="text-xl font-semibold mb-3">{feature.title}</h3>
-                    <p className="text-muted-foreground leading-relaxed">{feature.desc}</p>
-                  </CardContent>
-                </Card>
+                  </div>
+                </div>
               </FadeIn>
             ))}
           </div>
@@ -559,8 +574,9 @@ export default function Home() {
       </section>
 
       {/* How It Works */}
-      <section id="how-it-works" className="py-24 px-6 border-b border-border/50">
-        <div className="max-w-7xl mx-auto">
+      <section id="how-it-works" className="py-24 px-6 border-b border-border/50 relative overflow-hidden">
+        <div className="absolute top-[20%] left-[50%] -translate-x-1/2 w-[50%] h-[40%] bg-primary/8 blur-[130px] rounded-full pointer-events-none" />
+        <div className="max-w-7xl mx-auto relative z-10">
           <FadeIn>
             <div className="text-center mb-16">
               <h2 className="text-3xl lg:text-5xl font-bold mb-6">Seamless Integration</h2>
@@ -568,7 +584,7 @@ export default function Home() {
             </div>
           </FadeIn>
           <div className="relative">
-            <div className="hidden md:block absolute top-12 left-[10%] right-[10%] h-[2px] bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
+            <div className="hidden md:block absolute top-12 left-[16%] right-[16%] h-[2px] bg-gradient-to-r from-primary/60 via-primary/30 to-primary/60" />
             <div className="grid md:grid-cols-3 gap-12 text-center relative z-10">
               {[
                 { n: "1", title: "Keep Your Number", desc: "Calls simply forward to Sera when your team doesn't answer (typically after 3 rings)." },
@@ -576,9 +592,11 @@ export default function Home() {
                 { n: "3", title: "Instant Updates", desc: "Sera books straight into the calendar and the summary lands in your inbox immediately." },
               ].map((step, i) => (
                 <FadeIn key={i} delay={i * 0.1}>
-                  <div className="bg-background w-24 h-24 mx-auto rounded-2xl border border-border/50 shadow-xl flex items-center justify-center mb-6 relative">
-                    <div className="absolute inset-0 bg-primary/5 rounded-2xl animate-pulse" />
-                    <span className="text-3xl font-bold text-primary">{step.n}</span>
+                  <div className="relative w-24 h-24 mx-auto mb-6">
+                    <div className="absolute inset-0 rounded-full bg-gradient-to-br from-primary to-blue-500 opacity-20 blur-xl animate-pulse" />
+                    <div className="relative w-24 h-24 rounded-full bg-secondary/40 border-2 border-primary/40 shadow-[0_0_25px_rgba(0,200,150,0.25)] flex items-center justify-center">
+                      <span className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-br from-primary to-blue-400">{step.n}</span>
+                    </div>
                   </div>
                   <h3 className="text-xl font-semibold mb-3">{step.title}</h3>
                   <p className="text-muted-foreground">{step.desc}</p>
@@ -590,15 +608,16 @@ export default function Home() {
       </section>
 
       {/* — 3. COMPATIBLE SOFTWARE LOGOS — */}
-      <section className="py-16 px-6 border-b border-border/50 bg-secondary/10">
-        <div className="max-w-5xl mx-auto text-center">
+      <section className="py-16 px-6 border-b border-border/50 bg-secondary/10 relative overflow-hidden">
+        <div className="absolute top-[0%] left-[20%] w-[25%] h-[100%] bg-primary/8 blur-[100px] rounded-full pointer-events-none" />
+        <div className="max-w-5xl mx-auto text-center relative z-10">
           <FadeIn>
             <p className="text-sm font-medium text-muted-foreground uppercase tracking-widest mb-8">
               Integrates with leading Australian practice management software
             </p>
             <div className="flex flex-wrap justify-center gap-3">
               {SOFTWARE_LOGOS.map((name) => (
-                <div key={name} className="px-5 py-2.5 rounded-full bg-secondary/50 border border-border/50 text-sm font-medium text-muted-foreground hover:border-primary/40 hover:text-foreground transition-colors">
+                <div key={name} className="px-5 py-2.5 rounded-full bg-secondary/50 border border-border/50 text-sm font-medium text-muted-foreground hover:border-primary/50 hover:text-foreground hover:shadow-[0_0_15px_rgba(0,200,150,0.15)] transition-all duration-300">
                   {name}
                 </div>
               ))}
@@ -608,8 +627,9 @@ export default function Home() {
       </section>
 
       {/* — 4. ROI CALCULATOR — */}
-      <section className="py-24 px-6 border-b border-border/50">
-        <div className="max-w-6xl mx-auto">
+      <section className="py-24 px-6 border-b border-border/50 relative overflow-hidden">
+        <div className="absolute bottom-[0%] right-[5%] w-[35%] h-[35%] bg-blue-500/8 blur-[120px] rounded-full pointer-events-none" />
+        <div className="max-w-6xl mx-auto relative z-10">
           <FadeIn>
             <div className="text-center max-w-2xl mx-auto mb-12">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4 border border-primary/20">
@@ -626,8 +646,10 @@ export default function Home() {
       </section>
 
       {/* — 5. TESTIMONIALS — */}
-      <section className="py-24 px-6 bg-secondary/20 border-b border-border/50">
-        <div className="max-w-7xl mx-auto">
+      <section className="py-24 px-6 bg-secondary/40 border-b border-border/50 relative overflow-hidden">
+        <div className="absolute top-[0%] right-[10%] w-[30%] h-[30%] bg-blue-500/10 blur-[110px] rounded-full pointer-events-none" />
+        <div className="absolute bottom-[0%] left-[5%] w-[25%] h-[25%] bg-primary/10 blur-[100px] rounded-full pointer-events-none" />
+        <div className="max-w-7xl mx-auto relative z-10">
           <FadeIn>
             <div className="text-center mb-14">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4 border border-primary/20">
@@ -660,8 +682,9 @@ export default function Home() {
       </section>
 
       {/* — 6. FAQ — */}
-      <section className="py-24 px-6 border-b border-border/50">
-        <div className="max-w-3xl mx-auto">
+      <section className="py-24 px-6 border-b border-border/50 relative overflow-hidden">
+        <div className="absolute top-[10%] left-[50%] -translate-x-1/2 w-[40%] h-[40%] bg-primary/6 blur-[130px] rounded-full pointer-events-none" />
+        <div className="max-w-3xl mx-auto relative z-10">
           <FadeIn>
             <div className="text-center mb-12">
               <h2 className="text-3xl lg:text-4xl font-bold mb-4">Common questions</h2>
@@ -697,8 +720,9 @@ export default function Home() {
       </section>
 
       {/* — 7. DEMO BOOKING SECTION — */}
-      <section id="demo" className="py-24 px-6 bg-secondary/20 border-t border-border/50">
-        <div className="max-w-4xl mx-auto">
+      <section id="demo" className="py-24 px-6 bg-secondary/20 border-t border-border/50 relative overflow-hidden">
+        <div className="absolute top-[10%] left-[10%] w-[30%] h-[30%] bg-primary/10 blur-[110px] rounded-full pointer-events-none" />
+        <div className="max-w-4xl mx-auto relative z-10">
           <FadeIn>
             <div className="text-center mb-10">
               <div className="text-sm font-medium text-primary uppercase tracking-widest mb-3">Book a Free Demo</div>
