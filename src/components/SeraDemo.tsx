@@ -23,6 +23,7 @@ export default function SeraDemo() {
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [suggestionIndex, setSuggestionIndex] = useState(0);
   const [secondsLeft, setSecondsLeft] = useState(60);
+  const [clinicName, setClinicName] = useState("");
   const vapiRef = useRef<Vapi | null>(null);
   const animFrameRef = useRef<number | null>(null);
   const suggestionTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -99,8 +100,11 @@ export default function SeraDemo() {
   const startCall = async () => {
     if (!vapiRef.current || callStatus !== "idle") return;
     setCallStatus("connecting");
+    const nameToUse = clinicName.trim() || "Bondi Demo Vet";
     try {
-      await vapiRef.current.start(ASSISTANT_ID);
+      await vapiRef.current.start(ASSISTANT_ID, {
+        variableValues: { clinic_name: nameToUse },
+      });
     } catch {
       setCallStatus("idle");
     }
@@ -179,7 +183,7 @@ export default function SeraDemo() {
                 <span className="text-xs font-medium text-primary tracking-widest uppercase">Live Demo</span>
                 <h3 className="text-xl font-bold tracking-tight">Talk to Sera</h3>
                 <p className="text-sm text-muted-foreground text-center max-w-[240px] leading-snug">
-                  Experience what your patients will hear when they call your clinic.
+                  Type your clinic's name below and hear Sera answer as if it were you.
                 </p>
               </div>
 
@@ -290,13 +294,23 @@ export default function SeraDemo() {
 
               <div className="flex items-center justify-center gap-4 w-full mt-1">
                 {callStatus === "idle" && (
-                  <button
-                    onClick={startCall}
-                    className="flex-1 flex items-center justify-center gap-2 bg-primary hover:bg-primary/90 text-primary-foreground font-semibold py-3.5 rounded-2xl transition-colors shadow-lg shadow-primary/25 cursor-pointer"
-                  >
-                    <PhoneCall className="w-5 h-5" />
-                    Start Call
-                  </button>
+                  <div className="w-full flex flex-col gap-3">
+                    <input
+                      type="text"
+                      value={clinicName}
+                      onChange={(e) => setClinicName(e.target.value)}
+                      placeholder="Your clinic name (optional)"
+                      maxLength={40}
+                      className="w-full px-4 py-2.5 rounded-xl bg-secondary/40 border border-border/60 text-sm text-foreground placeholder:text-muted-foreground text-center focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary/50 transition-all"
+                    />
+                    <button
+                      onClick={startCall}
+                      className="flex-1 flex items-center justify-center gap-2 bg-primary hover:bg-primary/90 text-primary-foreground font-semibold py-3.5 rounded-2xl transition-colors shadow-lg shadow-primary/25 cursor-pointer"
+                    >
+                      <PhoneCall className="w-5 h-5" />
+                      Start Call
+                    </button>
+                  </div>
                 )}
 
                 {(callStatus === "active" || callStatus === "connecting") && (
