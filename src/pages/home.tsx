@@ -1,9 +1,9 @@
 import { useState, useEffect, useRef } from "react";
-import { motion, useScroll, useTransform, AnimatePresence, useInView } from "framer-motion";
+import { motion, useScroll, useTransform, AnimatePresence, useInView, useMotionValue, animate } from "framer-motion";
 import {
   PhoneCall, CalendarCheck, Clock, Mail, LineChart, ShieldCheck,
   ChevronRight, PhoneMissed, Star, ChevronDown, CheckCircle2,
-  MessageSquare, TrendingUp, Users, Zap,
+  MessageSquare, TrendingUp, Users, Zap, DollarSign, Percent, Link2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -29,18 +29,50 @@ const FadeIn = ({ children, delay = 0, className = "" }: { children: React.React
   </motion.div>
 );
 
-function StatCounter({ value, suffix, prefix = "", label, decimals = 0 }: {
-  value: number; suffix: string; prefix?: string; label: string; decimals?: number;
+function StatCounter({ value, suffix, prefix = "", label }: {
+  value: number; suffix: string; prefix?: string; label: string;
 }) {
-  const display = decimals > 0 ? (value / Math.pow(10, decimals)).toFixed(1) : value.toLocaleString();
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { once: true, amount: 0.6 });
+  const [display, setDisplay] = useState("0");
+
+  useEffect(() => {
+    if (!inView) return;
+    const count = { val: 0 };
+    const controls = animate(count.val, value, {
+      duration: 1.6,
+      ease: "easeOut",
+      onUpdate: (latest) => setDisplay(Math.round(latest).toLocaleString()),
+    });
+    return () => controls.stop();
+  }, [inView, value]);
+
   return (
-    <div className="text-center">
+    <div ref={ref} className="text-center">
       <div className="text-4xl lg:text-5xl font-bold mb-2">
         <span>{prefix}</span>
         <span>{display}</span>
         <span className="text-primary">{suffix}</span>
       </div>
       <div className="text-muted-foreground text-sm font-medium uppercase tracking-wider">{label}</div>
+    </div>
+  );
+}
+
+function AlwaysOnStat() {
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { once: true, amount: 0.6 });
+  return (
+    <div ref={ref} className="text-center">
+      <motion.div
+        className="text-4xl lg:text-5xl font-bold mb-2"
+        initial={{ opacity: 0, scale: 0.7 }}
+        animate={inView ? { opacity: 1, scale: 1 } : {}}
+        transition={{ duration: 0.5, ease: "easeOut" }}
+      >
+        24/7
+      </motion.div>
+      <div className="text-muted-foreground text-sm font-medium uppercase tracking-wider">Always answering</div>
     </div>
   );
 }
@@ -112,6 +144,22 @@ function LiveTranscript() {
   );
 }
 
+function AnimatedDollar({ value }: { value: number }) {
+  const motionVal = useMotionValue(value);
+  const [display, setDisplay] = useState(value);
+
+  useEffect(() => {
+    const controls = animate(motionVal, value, {
+      duration: 0.6,
+      ease: "easeOut",
+      onUpdate: (latest) => setDisplay(Math.round(latest)),
+    });
+    return () => controls.stop();
+  }, [value]);
+
+  return <>${display.toLocaleString()}</>;
+}
+
 function ROICalculator() {
   const [missedCalls, setMissedCalls] = useState(30);
   const [consultValue, setConsultValue] = useState(95);
@@ -122,90 +170,111 @@ function ROICalculator() {
   const monthlyLeak = weeklyLeak * 4;
 
   return (
-    <div className="bg-background rounded-3xl border border-border/50 p-8 lg:p-12 shadow-xl">
-      <div className="grid lg:grid-cols-2 gap-12 items-start">
-        <div>
-          <div className="text-sm font-medium text-primary uppercase tracking-wider mb-2">Interactive Calculator</div>
-          <h3 className="text-2xl lg:text-3xl font-bold mb-8">What is your clinic currently losing?</h3>
+    <div className="relative rounded-[2rem] p-[1.5px] bg-gradient-to-br from-primary/50 via-border/30 to-blue-500/40 shadow-[0_0_60px_rgba(0,200,150,0.15)]">
+      <div className="bg-background rounded-[2rem] p-8 lg:p-12 relative overflow-hidden">
+        <div className="absolute top-[-10%] right-[-5%] w-[40%] h-[40%] bg-primary/10 blur-[100px] rounded-full pointer-events-none" />
+        <div className="grid lg:grid-cols-2 gap-12 items-start relative z-10">
+          <div>
+            <div className="text-sm font-medium text-primary uppercase tracking-wider mb-2">Interactive Calculator</div>
+            <h3 className="text-2xl lg:text-3xl font-bold mb-8">What is your clinic currently losing?</h3>
 
-          <div className="space-y-8">
-            <div>
-              <div className="flex justify-between mb-3">
-                <label className="text-sm font-medium text-foreground">Missed calls per week</label>
-                <span className="text-2xl font-bold text-primary">{missedCalls}</span>
+            <div className="space-y-8">
+              <div>
+                <div className="flex justify-between items-center mb-3">
+                  <label className="flex items-center gap-2 text-sm font-medium text-foreground">
+                    <PhoneMissed className="w-4 h-4 text-primary" />
+                    Missed calls per week
+                  </label>
+                  <span className="text-2xl font-bold text-primary">{missedCalls}</span>
+                </div>
+                <input
+                  type="range" min={5} max={80} step={1} value={missedCalls}
+                  onChange={(e) => setMissedCalls(Number(e.target.value))}
+                  className="w-full h-2 bg-secondary rounded-full appearance-none cursor-pointer accent-primary"
+                />
+                <div className="flex justify-between text-xs text-muted-foreground mt-1"><span>5</span><span>80</span></div>
               </div>
-              <input
-                type="range" min={5} max={80} step={1} value={missedCalls}
-                onChange={(e) => setMissedCalls(Number(e.target.value))}
-                className="w-full h-2 bg-secondary rounded-full appearance-none cursor-pointer accent-primary"
-              />
-              <div className="flex justify-between text-xs text-muted-foreground mt-1"><span>5</span><span>80</span></div>
-            </div>
 
-            <div>
-              <div className="flex justify-between mb-3">
-                <label className="text-sm font-medium text-foreground">Average consult value</label>
-                <span className="text-2xl font-bold text-primary">${consultValue}</span>
+              <div>
+                <div className="flex justify-between items-center mb-3">
+                  <label className="flex items-center gap-2 text-sm font-medium text-foreground">
+                    <DollarSign className="w-4 h-4 text-primary" />
+                    Average consult value
+                  </label>
+                  <span className="text-2xl font-bold text-primary">${consultValue}</span>
+                </div>
+                <input
+                  type="range" min={50} max={300} step={5} value={consultValue}
+                  onChange={(e) => setConsultValue(Number(e.target.value))}
+                  className="w-full h-2 bg-secondary rounded-full appearance-none cursor-pointer accent-primary"
+                />
+                <div className="flex justify-between text-xs text-muted-foreground mt-1"><span>$50</span><span>$300</span></div>
               </div>
-              <input
-                type="range" min={50} max={300} step={5} value={consultValue}
-                onChange={(e) => setConsultValue(Number(e.target.value))}
-                className="w-full h-2 bg-secondary rounded-full appearance-none cursor-pointer accent-primary"
-              />
-              <div className="flex justify-between text-xs text-muted-foreground mt-1"><span>$50</span><span>$300</span></div>
-            </div>
 
-            <div>
-              <div className="flex justify-between mb-3">
-                <label className="text-sm font-medium text-foreground">Caller conversion rate</label>
-                <span className="text-2xl font-bold text-primary">{conversionRate}%</span>
+              <div>
+                <div className="flex justify-between items-center mb-3">
+                  <label className="flex items-center gap-2 text-sm font-medium text-foreground">
+                    <Percent className="w-4 h-4 text-primary" />
+                    Caller conversion rate
+                  </label>
+                  <span className="text-2xl font-bold text-primary">{conversionRate}%</span>
+                </div>
+                <input
+                  type="range" min={40} max={100} step={5} value={conversionRate}
+                  onChange={(e) => setConversionRate(Number(e.target.value))}
+                  className="w-full h-2 bg-secondary rounded-full appearance-none cursor-pointer accent-primary"
+                />
+                <div className="flex justify-between text-xs text-muted-foreground mt-1"><span>40%</span><span>100%</span></div>
               </div>
-              <input
-                type="range" min={40} max={100} step={5} value={conversionRate}
-                onChange={(e) => setConversionRate(Number(e.target.value))}
-                className="w-full h-2 bg-secondary rounded-full appearance-none cursor-pointer accent-primary"
-              />
-              <div className="flex justify-between text-xs text-muted-foreground mt-1"><span>40%</span><span>100%</span></div>
-            </div>
-          </div>
-        </div>
-
-        <div className="flex flex-col gap-4">
-          <motion.div
-            key={weeklyLeak}
-            initial={{ scale: 0.97 }}
-            animate={{ scale: 1 }}
-            className="bg-destructive/10 border border-destructive/30 rounded-2xl p-6 text-center"
-          >
-            <div className="text-xs font-medium text-destructive uppercase tracking-widest mb-1">Weekly revenue leak</div>
-            <div className="text-5xl font-bold text-destructive mb-1">${weeklyLeak.toLocaleString()}</div>
-            <div className="text-sm text-muted-foreground">slipping through each week</div>
-          </motion.div>
-
-          <div className="grid grid-cols-2 gap-4">
-            <div className="bg-secondary/40 border border-border/50 rounded-2xl p-5 text-center">
-              <div className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-1">Monthly</div>
-              <div className="text-2xl font-bold">${monthlyLeak.toLocaleString()}</div>
-            </div>
-            <div className="bg-secondary/40 border border-border/50 rounded-2xl p-5 text-center">
-              <div className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-1">Annual</div>
-              <div className="text-2xl font-bold">${annualLeak.toLocaleString()}</div>
             </div>
           </div>
 
-          <div className="bg-primary/10 border border-primary/30 rounded-2xl p-6 text-center">
-            <div className="text-xs font-medium text-primary uppercase tracking-widest mb-1">Sera recovers</div>
-            <div className="text-4xl font-bold text-primary mb-1">~${(annualLeak * 0.9).toLocaleString()}</div>
-            <div className="text-sm text-muted-foreground">per year for your clinic</div>
-          </div>
+          <div className="flex flex-col gap-4">
+            <div className="relative rounded-2xl overflow-hidden">
+              <motion.div
+                className="absolute inset-0 bg-destructive/10 rounded-2xl"
+                animate={{ opacity: [0.6, 1, 0.6] }}
+                transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
+              />
+              <div className="relative border border-destructive/30 rounded-2xl p-6 text-center">
+                <div className="text-xs font-medium text-destructive uppercase tracking-widest mb-1">Weekly revenue leak</div>
+                <div className="text-5xl font-bold text-destructive mb-1">
+                  <AnimatedDollar value={weeklyLeak} />
+                </div>
+                <div className="text-sm text-muted-foreground">slipping through each week</div>
+              </div>
+            </div>
 
-          <Button
-            size="lg"
-            onClick={openCalendly}
-            className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold h-13 rounded-xl mt-2"
-          >
-            Book a Demo — Lock In This Revenue
-          </Button>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="bg-secondary/40 border border-border/50 rounded-2xl p-5 text-center">
+                <div className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-1">Monthly</div>
+                <div className="text-2xl font-bold"><AnimatedDollar value={monthlyLeak} /></div>
+              </div>
+              <div className="bg-secondary/40 border border-border/50 rounded-2xl p-5 text-center">
+                <div className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-1">Annual</div>
+                <div className="text-2xl font-bold"><AnimatedDollar value={annualLeak} /></div>
+              </div>
+            </div>
+
+            <div className="relative rounded-2xl overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/15 to-blue-500/10 rounded-2xl" />
+              <div className="relative border-2 border-primary/40 rounded-2xl p-6 text-center shadow-[0_0_30px_rgba(0,200,150,0.2)]">
+                <div className="text-xs font-medium text-primary uppercase tracking-widest mb-1">Sera recovers</div>
+                <div className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-primary to-blue-400 mb-1">
+                  ~<AnimatedDollar value={Math.round(annualLeak * 0.9)} />
+                </div>
+                <div className="text-sm text-muted-foreground">per year for your clinic</div>
+              </div>
+            </div>
+
+            <Button
+              size="lg"
+              onClick={openCalendly}
+              className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold h-13 rounded-xl mt-2 shadow-[0_0_25px_rgba(0,200,150,0.35)]"
+            >
+              Book a Demo — Lock In This Revenue
+            </Button>
+          </div>
         </div>
       </div>
     </div>
@@ -539,10 +608,7 @@ export default function Home() {
         <div className="max-w-3xl mx-auto grid grid-cols-1 sm:grid-cols-3 gap-8 divide-x-0 sm:divide-x divide-border/30">
           <StatCounter value={300} suffix="+" label="Calls handled per month" />
           <StatCounter value={65} suffix="%" label="Missed calls converted to bookings" />
-          <div className="text-center">
-            <div className="text-4xl lg:text-5xl font-bold mb-2">24/7</div>
-            <div className="text-muted-foreground text-sm font-medium uppercase tracking-wider">Always answering</div>
-          </div>
+          <AlwaysOnStat />
         </div>
       </section>
 
@@ -709,18 +775,29 @@ export default function Home() {
       </section>
 
       {/* — 3. COMPATIBLE SOFTWARE LOGOS — */}
-      <section className="py-16 px-6 border-b border-border/50 bg-secondary/10 relative overflow-hidden">
+      <section className="py-20 px-6 border-b border-border/50 bg-secondary/10 relative overflow-hidden">
         <div className="absolute top-[0%] left-[20%] w-[25%] h-[100%] bg-primary/8 blur-[100px] rounded-full pointer-events-none" />
         <div className="max-w-5xl mx-auto text-center relative z-10">
           <FadeIn>
-            <p className="text-sm font-medium text-muted-foreground uppercase tracking-widest mb-8">
-              Integrates with leading Australian practice management software
-            </p>
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium mb-5 border border-primary/20">
+              <Link2 className="w-4 h-4" /> Native Integrations
+            </div>
+            <h3 className="text-2xl lg:text-3xl font-bold mb-10">
+              Plugs straight into the software your clinic <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-blue-400">already runs on</span>
+            </h3>
             <div className="flex flex-wrap justify-center gap-3">
-              {SOFTWARE_LOGOS.map((name) => (
-                <div key={name} className="px-5 py-2.5 rounded-full bg-secondary/50 border border-border/50 text-sm font-medium text-muted-foreground hover:border-primary/50 hover:text-foreground hover:shadow-[0_0_15px_rgba(0,200,150,0.15)] transition-all duration-300">
+              {SOFTWARE_LOGOS.map((name, i) => (
+                <motion.div
+                  key={name}
+                  initial={{ opacity: 0, y: 12 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.4, delay: i * 0.08 }}
+                  className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-secondary/50 border border-border/50 text-sm font-medium text-muted-foreground hover:border-primary/50 hover:text-foreground hover:bg-secondary/70 hover:shadow-[0_0_20px_rgba(0,200,150,0.2)] transition-all duration-300"
+                >
+                  <span className="w-1.5 h-1.5 rounded-full bg-primary" />
                   {name}
-                </div>
+                </motion.div>
               ))}
             </div>
           </FadeIn>
