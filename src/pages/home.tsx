@@ -169,19 +169,19 @@ function ROICalculator() {
   const monthlyLeak = weeklyLeak * 4;
 
   return (
-    <div className="relative rounded-[2rem] p-[1.5px] bg-gradient-to-br from-primary/50 via-border/30 to-blue-500/40 shadow-[0_0_60px_rgba(0,200,150,0.15)]">
-      <div className="bg-background rounded-[2rem] p-8 lg:p-12 relative overflow-hidden">
-        <div className="absolute top-[-10%] right-[-5%] w-[40%] h-[40%] bg-primary/10 blur-[100px] rounded-full pointer-events-none" />
-        <div className="grid lg:grid-cols-2 gap-12 items-start relative z-10">
-          <div>
+    <div className="relative rounded-[2rem] p-[1.5px] bg-gradient-to-br from-primary/50 via-border/30 to-blue-500/40 shadow-[0_0_60px_rgba(0,200,150,0.15)] overflow-hidden">
+      <div className="bg-background rounded-[2rem] p-6 sm:p-8 lg:p-12 relative overflow-hidden">
+        <div className="hidden md:block absolute top-[-10%] right-[-5%] w-[40%] h-[40%] bg-primary/10 blur-[100px] rounded-full pointer-events-none" />
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-start relative z-10 min-w-0">
+          <div className="min-w-0">
             <div className="text-sm font-medium text-primary uppercase tracking-wider mb-2">Interactive Calculator</div>
-            <h3 className="text-2xl lg:text-3xl font-bold mb-8">What is your clinic currently losing?</h3>
+            <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-8">What is your clinic currently losing?</h3>
 
             <div className="space-y-8">
               <div>
                 <div className="flex justify-between items-center mb-3">
                   <label className="flex items-center gap-2 text-sm font-medium text-foreground">
-                    <PhoneMissed className="w-4 h-4 text-primary" />
+                    <PhoneMissed className="w-4 h-4 text-primary flex-shrink-0" />
                     Missed calls per week
                   </label>
                   <span className="text-2xl font-bold text-primary">{missedCalls}</span>
@@ -197,7 +197,7 @@ function ROICalculator() {
               <div>
                 <div className="flex justify-between items-center mb-3">
                   <label className="flex items-center gap-2 text-sm font-medium text-foreground">
-                    <DollarSign className="w-4 h-4 text-primary" />
+                    <DollarSign className="w-4 h-4 text-primary flex-shrink-0" />
                     Average consult value
                   </label>
                   <span className="text-2xl font-bold text-primary">${consultValue}</span>
@@ -213,7 +213,7 @@ function ROICalculator() {
               <div>
                 <div className="flex justify-between items-center mb-3">
                   <label className="flex items-center gap-2 text-sm font-medium text-foreground">
-                    <Percent className="w-4 h-4 text-primary" />
+                    <Percent className="w-4 h-4 text-primary flex-shrink-0" />
                     Caller conversion rate
                   </label>
                   <span className="text-2xl font-bold text-primary">{conversionRate}%</span>
@@ -228,38 +228,38 @@ function ROICalculator() {
             </div>
           </div>
 
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-4 min-w-0">
             <div className="relative rounded-2xl overflow-hidden">
               <motion.div
                 className="absolute inset-0 bg-destructive/10 rounded-2xl"
                 animate={{ opacity: [0.6, 1, 0.6] }}
                 transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
               />
-              <div className="relative border border-destructive/30 rounded-2xl p-6 text-center">
+              <div className="relative border border-destructive/30 rounded-2xl p-4 sm:p-6 text-center">
                 <div className="text-xs font-medium text-destructive uppercase tracking-widest mb-1">Weekly revenue leak</div>
-                <div className="text-5xl font-bold text-destructive mb-1">
+                <div className="text-3xl sm:text-4xl lg:text-5xl font-bold text-destructive mb-1 break-words">
                   <AnimatedDollar value={weeklyLeak} />
                 </div>
                 <div className="text-sm text-muted-foreground">slipping through each week</div>
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
-              <div className="bg-secondary/40 border border-border/50 rounded-2xl p-5 text-center">
+            <div className="grid grid-cols-2 gap-3 sm:gap-4 min-w-0">
+              <div className="bg-secondary/40 border border-border/50 rounded-2xl p-3 sm:p-5 text-center min-w-0">
                 <div className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-1">Monthly</div>
-                <div className="text-2xl font-bold"><AnimatedDollar value={monthlyLeak} /></div>
+                <div className="text-lg sm:text-2xl font-bold break-words"><AnimatedDollar value={monthlyLeak} /></div>
               </div>
-              <div className="bg-secondary/40 border border-border/50 rounded-2xl p-5 text-center">
+              <div className="bg-secondary/40 border border-border/50 rounded-2xl p-3 sm:p-5 text-center min-w-0">
                 <div className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-1">Annual</div>
-                <div className="text-2xl font-bold"><AnimatedDollar value={annualLeak} /></div>
+                <div className="text-lg sm:text-2xl font-bold break-words"><AnimatedDollar value={annualLeak} /></div>
               </div>
             </div>
 
             <div className="relative rounded-2xl overflow-hidden">
               <div className="absolute inset-0 bg-gradient-to-br from-primary/15 to-blue-500/10 rounded-2xl" />
-              <div className="relative border-2 border-primary/40 rounded-2xl p-6 text-center shadow-[0_0_30px_rgba(0,200,150,0.2)]">
+              <div className="relative border-2 border-primary/40 rounded-2xl p-4 sm:p-6 text-center shadow-[0_0_30px_rgba(0,200,150,0.2)]">
                 <div className="text-xs font-medium text-primary uppercase tracking-widest mb-1">Sera recovers</div>
-                <div className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-primary to-blue-400 mb-1">
+                <div className="text-2xl sm:text-3xl lg:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-primary to-blue-400 mb-1 break-words">
                   ~<AnimatedDollar value={Math.round(annualLeak * 0.9)} />
                 </div>
                 <div className="text-sm text-muted-foreground">per year for your clinic</div>
@@ -564,15 +564,15 @@ export default function Home() {
       {/* Hero Section */}
       <section className="relative pt-40 pb-20 lg:pt-48 lg:pb-32 px-6 overflow-hidden">
         <div className="absolute inset-0 z-0 pointer-events-none">
-          <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-primary/10 blur-[120px] rounded-full" />
-          <div className="absolute bottom-[20%] right-[-10%] w-[40%] h-[40%] bg-blue-500/10 blur-[120px] rounded-full" />
+          <div className="hidden md:block absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-primary/10 blur-[120px] rounded-full" />
+          <div className="hidden md:block absolute bottom-[20%] right-[-10%] w-[40%] h-[40%] bg-blue-500/10 blur-[120px] rounded-full" />
           <motion.div
             style={{
               y,
               maskImage: "radial-gradient(circle at 75% 40%, black 0%, black 30%, transparent 70%)",
               WebkitMaskImage: "radial-gradient(circle at 75% 40%, black 0%, black 30%, transparent 70%)",
             }}
-            className="absolute top-0 right-0 w-[65%] h-[70%]"
+            className="hidden md:block absolute top-0 right-0 w-[65%] h-[70%]"
           >
             <svg viewBox="0 0 800 500" className="w-full h-full" preserveAspectRatio="xMidYMid slice">
               <defs>
@@ -671,7 +671,7 @@ export default function Home() {
 
       {/* The Problem Section */}
       <section className="py-24 px-6 bg-secondary/30 border-b border-border/50 relative overflow-hidden">
-        <div className="absolute top-[10%] right-[5%] w-[35%] h-[35%] bg-blue-500/10 blur-[100px] rounded-full pointer-events-none" />
+        <div className="hidden md:block absolute top-[10%] right-[5%] w-[35%] h-[35%] bg-blue-500/10 blur-[100px] rounded-full pointer-events-none" />
         <div className="max-w-7xl mx-auto relative z-10">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div>
@@ -735,8 +735,8 @@ export default function Home() {
 
       {/* Features Grid */}
       <section className="py-24 px-6 relative overflow-hidden">
-        <div className="absolute top-[5%] left-[-5%] w-[30%] h-[30%] bg-primary/10 blur-[110px] rounded-full pointer-events-none" />
-        <div className="absolute bottom-[10%] right-[0%] w-[25%] h-[25%] bg-blue-500/10 blur-[100px] rounded-full pointer-events-none" />
+        <div className="hidden md:block absolute top-[5%] left-[-5%] w-[30%] h-[30%] bg-primary/10 blur-[110px] rounded-full pointer-events-none" />
+        <div className="hidden md:block absolute bottom-[10%] right-[0%] w-[25%] h-[25%] bg-blue-500/10 blur-[100px] rounded-full pointer-events-none" />
         <div className="max-w-7xl mx-auto relative z-10">
           <FadeIn>
             <div className="text-center max-w-3xl mx-auto mb-16">
@@ -821,7 +821,7 @@ export default function Home() {
 
       {/* How It Works */}
       <section id="how-it-works" className="py-24 px-6 border-b border-border/50 relative overflow-hidden">
-        <div className="absolute top-[20%] left-[50%] -translate-x-1/2 w-[50%] h-[40%] bg-primary/8 blur-[130px] rounded-full pointer-events-none" />
+        <div className="hidden md:block absolute top-[20%] left-[50%] -translate-x-1/2 w-[50%] h-[40%] bg-primary/8 blur-[130px] rounded-full pointer-events-none" />
         <div className="max-w-7xl mx-auto relative z-10">
           <FadeIn>
             <div className="text-center mb-16">
@@ -835,7 +835,7 @@ export default function Home() {
 
       {/* — 3. COMPATIBLE SOFTWARE LOGOS — */}
       <section className="py-20 px-6 border-b border-border/50 bg-secondary/10 relative overflow-hidden">
-        <div className="absolute top-[0%] left-[20%] w-[25%] h-[100%] bg-primary/8 blur-[100px] rounded-full pointer-events-none" />
+        <div className="hidden md:block absolute top-[0%] left-[20%] w-[25%] h-[100%] bg-primary/8 blur-[100px] rounded-full pointer-events-none" />
         <div className="max-w-5xl mx-auto text-center relative z-10">
           <FadeIn>
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium mb-5 border border-primary/20">
@@ -865,7 +865,7 @@ export default function Home() {
 
       {/* — 4. ROI CALCULATOR — */}
       <section className="py-24 px-6 border-b border-border/50 relative overflow-hidden">
-        <div className="absolute bottom-[0%] right-[5%] w-[35%] h-[35%] bg-blue-500/8 blur-[120px] rounded-full pointer-events-none" />
+        <div className="hidden md:block absolute bottom-[0%] right-[5%] w-[35%] h-[35%] bg-blue-500/8 blur-[120px] rounded-full pointer-events-none" />
         <div className="max-w-6xl mx-auto relative z-10">
           <FadeIn>
             <div className="text-center max-w-2xl mx-auto mb-12">
@@ -884,8 +884,8 @@ export default function Home() {
 
       {/* — 5. TESTIMONIALS — */}
       <section className="py-24 px-6 bg-secondary/40 border-b border-border/50 relative overflow-hidden">
-        <div className="absolute top-[0%] right-[10%] w-[30%] h-[30%] bg-blue-500/10 blur-[110px] rounded-full pointer-events-none" />
-        <div className="absolute bottom-[0%] left-[5%] w-[25%] h-[25%] bg-primary/10 blur-[100px] rounded-full pointer-events-none" />
+        <div className="hidden md:block absolute top-[0%] right-[10%] w-[30%] h-[30%] bg-blue-500/10 blur-[110px] rounded-full pointer-events-none" />
+        <div className="hidden md:block absolute bottom-[0%] left-[5%] w-[25%] h-[25%] bg-primary/10 blur-[100px] rounded-full pointer-events-none" />
         <div className="max-w-7xl mx-auto relative z-10">
           <FadeIn>
             <div className="text-center mb-14">
@@ -920,7 +920,7 @@ export default function Home() {
 
       {/* — 6. FAQ — */}
       <section className="py-24 px-6 border-b border-border/50 relative overflow-hidden">
-        <div className="absolute top-[10%] left-[50%] -translate-x-1/2 w-[40%] h-[40%] bg-primary/6 blur-[130px] rounded-full pointer-events-none" />
+        <div className="hidden md:block absolute top-[10%] left-[50%] -translate-x-1/2 w-[40%] h-[40%] bg-primary/6 blur-[130px] rounded-full pointer-events-none" />
         <div className="max-w-3xl mx-auto relative z-10">
           <FadeIn>
             <div className="text-center mb-12">
@@ -958,7 +958,7 @@ export default function Home() {
 
       {/* — FOUNDER'S NOTE — */}
       <section className="py-20 px-6 border-b border-border/50 relative overflow-hidden">
-        <div className="absolute top-[10%] left-[10%] w-[25%] h-[25%] bg-primary/8 blur-[100px] rounded-full pointer-events-none" />
+        <div className="hidden md:block absolute top-[10%] left-[10%] w-[25%] h-[25%] bg-primary/8 blur-[100px] rounded-full pointer-events-none" />
         <div className="max-w-2xl mx-auto relative z-10">
           <FadeIn>
             <div className="text-center mb-8">
@@ -987,7 +987,7 @@ export default function Home() {
 
       {/* — 7. DEMO BOOKING SECTION — */}
       <section id="demo" className="py-24 px-6 bg-secondary/20 border-t border-border/50 relative overflow-hidden">
-        <div className="absolute top-[10%] left-[10%] w-[30%] h-[30%] bg-primary/10 blur-[110px] rounded-full pointer-events-none" />
+        <div className="hidden md:block absolute top-[10%] left-[10%] w-[30%] h-[30%] bg-primary/10 blur-[110px] rounded-full pointer-events-none" />
         <div className="max-w-4xl mx-auto relative z-10">
           <FadeIn>
             <div className="text-center mb-10">
