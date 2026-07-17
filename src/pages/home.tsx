@@ -530,7 +530,15 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-blue-500 flex items-center justify-center">
-              <PhoneCall className="w-4 h-4 text-primary-foreground" />
+              <svg viewBox="0 0 64 64" className="w-5 h-5">
+                <g fill="#ffffff">
+                  <rect x="9" y="22" width="6" height="20" rx="3" />
+                  <rect x="19" y="16" width="6" height="32" rx="3" />
+                  <rect x="29" y="10" width="6" height="44" rx="3" />
+                  <rect x="39" y="16" width="6" height="32" rx="3" />
+                  <rect x="49" y="22" width="6" height="20" rx="3" />
+                </g>
+              </svg>
             </div>
             <span className="text-xl font-bold tracking-tight">Sera AI</span>
           </div>
@@ -935,8 +943,16 @@ export default function Home() {
       <footer className="border-t border-border/50 py-12 px-6 bg-background">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-2">
-            <div className="w-6 h-6 rounded bg-primary flex items-center justify-center">
-              <PhoneCall className="w-3 h-3 text-primary-foreground" />
+            <div className="w-6 h-6 rounded bg-gradient-to-br from-primary to-blue-500 flex items-center justify-center">
+              <svg viewBox="0 0 64 64" className="w-4 h-4">
+                <g fill="#ffffff">
+                  <rect x="9" y="22" width="6" height="20" rx="3" />
+                  <rect x="19" y="16" width="6" height="32" rx="3" />
+                  <rect x="29" y="10" width="6" height="44" rx="3" />
+                  <rect x="39" y="16" width="6" height="32" rx="3" />
+                  <rect x="49" y="22" width="6" height="20" rx="3" />
+                </g>
+              </svg>
             </div>
             <span className="text-lg font-bold tracking-tight">Sera AI</span>
           </div>
