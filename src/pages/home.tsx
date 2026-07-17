@@ -542,6 +542,13 @@ export default function Home() {
             <span className="text-xl font-bold tracking-tight">Sera AI</span>
           </div>
           <div className="flex items-center gap-4">
+            <a
+              href="mailto:aaron@seraai.co?subject=Sera%20AI%20Enquiry"
+              className="hidden sm:flex items-center justify-center w-9 h-9 rounded-full border border-border/50 text-muted-foreground hover:border-primary/50 hover:text-primary transition-colors"
+              title="Contact us"
+            >
+              <Mail className="w-4 h-4" />
+            </a>
             <a href="#demo" className="hidden md:block text-sm text-muted-foreground hover:text-foreground transition-colors">
               Book a Demo
             </a>
@@ -671,20 +678,22 @@ export default function Home() {
               <FadeIn>
                 <h2 className="text-3xl lg:text-5xl font-bold mb-6">
                   You're missing calls.<br />
-                  <span className="text-muted-foreground">And losing revenue.</span>
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-destructive to-orange-400">And losing revenue.</span>
                 </h2>
                 <p className="text-lg text-muted-foreground mb-8">
                   Most vet clinics miss 20–40 calls per week during lunch breaks, busy periods, and after hours. When pet owners can't get through, they call the clinic down the road.
                 </p>
               </FadeIn>
               <FadeIn delay={0.2}>
-                <div className="bg-background rounded-2xl p-8 border border-border/50 relative overflow-hidden group">
-                  <div className="absolute top-0 right-0 p-6 opacity-10 group-hover:opacity-20 transition-opacity duration-500">
-                    <LineChart className="w-32 h-32 text-destructive" />
+                <div className="relative rounded-2xl p-[1.5px] bg-gradient-to-br from-destructive/60 via-destructive/20 to-transparent shadow-[0_0_40px_rgba(239,68,68,0.15)]">
+                  <div className="bg-background rounded-2xl p-8 relative overflow-hidden group">
+                    <div className="absolute top-0 right-0 p-6 opacity-10 group-hover:opacity-20 transition-opacity duration-500">
+                      <LineChart className="w-32 h-32 text-destructive" />
+                    </div>
+                    <div className="text-sm font-medium text-destructive mb-2 uppercase tracking-wider">The Silent Leak</div>
+                    <div className="text-4xl font-bold mb-2 text-transparent bg-clip-text bg-gradient-to-r from-destructive to-orange-400">$1,900 – $3,800</div>
+                    <div className="text-muted-foreground">Average missed revenue <strong className="text-foreground">every single week</strong> (assuming $95 avg consult value). Sera catches all of it.</div>
                   </div>
-                  <div className="text-sm font-medium text-destructive mb-2 uppercase tracking-wider">The Silent Leak</div>
-                  <div className="text-4xl font-bold mb-2">$1,900 – $3,800</div>
-                  <div className="text-muted-foreground">Average missed revenue <strong className="text-foreground">every single week</strong> (assuming $95 avg consult value). Sera catches all of it.</div>
                 </div>
               </FadeIn>
             </div>
@@ -1011,7 +1020,7 @@ export default function Home() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-border/50 py-12 px-6 bg-background">
+      <footer className="border-t border-border/50 py-12 px-6 pr-6 lg:pr-32 bg-background">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-2">
             <div className="w-6 h-6 rounded bg-gradient-to-br from-primary to-blue-500 flex items-center justify-center">
