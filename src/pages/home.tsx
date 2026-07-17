@@ -639,6 +639,16 @@ export default function Home() {
                 </a>
               </div>
             </FadeIn>
+            <FadeIn delay={0.4}>
+              <div className="flex flex-wrap items-center gap-x-6 gap-y-2 mt-6">
+                {["No lock-in contracts", "Setup within 48 hours", "Australian owned & operated"].map((item) => (
+                  <div key={item} className="flex items-center gap-1.5 text-sm text-muted-foreground">
+                    <CheckCircle2 className="w-4 h-4 text-primary flex-shrink-0" />
+                    {item}
+                  </div>
+                ))}
+              </div>
+            </FadeIn>
           </div>
         </div>
       </section>
@@ -1018,12 +1028,18 @@ export default function Home() {
             <span className="text-lg font-bold tracking-tight">Sera AI</span>
           </div>
           <div className="text-sm text-muted-foreground text-center">
-            <div>© {new Date().getFullYear()} Sera AI. Australian owned and operated.</div>
-            <a href="mailto:aaron@seraai.co" className="hover:text-foreground transition-colors">aaron@seraai.co</a>
+            © {new Date().getFullYear()} Sera AI. Australian owned and operated.
           </div>
-          <div className="flex gap-6 text-sm text-muted-foreground">
+          <div className="flex items-center gap-6 text-sm text-muted-foreground">
             <a href="#" className="hover:text-foreground transition-colors">Privacy Policy</a>
             <a href="#" className="hover:text-foreground transition-colors">Terms of Service</a>
+            <a
+              href="mailto:aaron@seraai.co?subject=Sera%20AI%20Enquiry"
+              className="flex items-center gap-1.5 px-4 py-2 rounded-full bg-secondary/50 border border-border/50 hover:border-primary/50 hover:text-foreground transition-colors"
+            >
+              <Mail className="w-3.5 h-3.5" />
+              Contact us
+            </a>
           </div>
         </div>
       </footer>
