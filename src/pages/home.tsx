@@ -8,7 +8,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 
-import heroWaves from "../assets/hero-waves.png";
 import receptionist from "../assets/receptionist.png";
 
 const CALENDLY_URL = "https://calendly.com/aaron-seraai/sera-ai-demo";
@@ -560,13 +559,46 @@ export default function Home() {
         <div className="absolute inset-0 z-0 pointer-events-none">
           <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-primary/10 blur-[120px] rounded-full" />
           <div className="absolute bottom-[20%] right-[-10%] w-[40%] h-[40%] bg-blue-500/10 blur-[120px] rounded-full" />
-          <motion.img
-            style={{ y }}
-            src={heroWaves}
-            alt="Abstract waves"
-            className="absolute top-0 right-0 w-[60%] opacity-30 mix-blend-screen pointer-events-none"
-            onError={(e) => { e.currentTarget.style.display = "none"; }}
-          />
+          <motion.div
+            style={{
+              y,
+              maskImage: "radial-gradient(circle at 75% 40%, black 0%, black 30%, transparent 70%)",
+              WebkitMaskImage: "radial-gradient(circle at 75% 40%, black 0%, black 30%, transparent 70%)",
+            }}
+            className="absolute top-0 right-0 w-[65%] h-[70%]"
+          >
+            <svg viewBox="0 0 800 500" className="w-full h-full" preserveAspectRatio="xMidYMid slice">
+              <defs>
+                <linearGradient id="waveGrad1" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stopColor="#00c896" stopOpacity="0" />
+                  <stop offset="50%" stopColor="#00c896" stopOpacity="0.6" />
+                  <stop offset="100%" stopColor="#0ea5e9" stopOpacity="0" />
+                </linearGradient>
+                <linearGradient id="waveGrad2" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stopColor="#0ea5e9" stopOpacity="0" />
+                  <stop offset="50%" stopColor="#0ea5e9" stopOpacity="0.4" />
+                  <stop offset="100%" stopColor="#00c896" stopOpacity="0" />
+                </linearGradient>
+              </defs>
+              {[0, 1, 2, 3, 4].map((i) => (
+                <motion.path
+                  key={i}
+                  d={`M0,${250 + i * 8} Q150,${180 - i * 14} 300,${250 + i * 4} T600,${250 - i * 10} T900,${250 + i * 6}`}
+                  fill="none"
+                  stroke={i % 2 === 0 ? "url(#waveGrad1)" : "url(#waveGrad2)"}
+                  strokeWidth={1.5 + (4 - i) * 0.4}
+                  animate={{
+                    d: [
+                      `M0,${250 + i * 8} Q150,${180 - i * 14} 300,${250 + i * 4} T600,${250 - i * 10} T900,${250 + i * 6}`,
+                      `M0,${250 + i * 8} Q150,${220 - i * 14} 300,${230 + i * 4} T600,${270 - i * 10} T900,${250 + i * 6}`,
+                      `M0,${250 + i * 8} Q150,${180 - i * 14} 300,${250 + i * 4} T600,${250 - i * 10} T900,${250 + i * 6}`,
+                    ],
+                  }}
+                  transition={{ duration: 6 + i, repeat: Infinity, ease: "easeInOut" }}
+                />
+              ))}
+            </svg>
+          </motion.div>
         </div>
 
         <div className="max-w-7xl mx-auto relative z-10">
