@@ -937,6 +937,35 @@ export default function Home() {
         </div>
       </section>
 
+      {/* — FOUNDER'S NOTE — */}
+      <section className="py-20 px-6 border-b border-border/50 relative overflow-hidden">
+        <div className="absolute top-[10%] left-[10%] w-[25%] h-[25%] bg-primary/8 blur-[100px] rounded-full pointer-events-none" />
+        <div className="max-w-2xl mx-auto relative z-10">
+          <FadeIn>
+            <div className="text-center mb-8">
+              <div className="text-sm font-medium text-primary uppercase tracking-widest mb-2">Why I built Sera</div>
+            </div>
+            <div className="bg-secondary/20 border border-border/50 rounded-2xl p-8 md:p-10">
+              <p className="text-foreground/90 leading-relaxed mb-4">
+                A few years ago my dog got sick late on a Sunday. I called every vet clinic I could find — straight to voicemail, or the phone just rang out. By the time I finally got through, a lot of time had already passed. He was okay in the end, but that feeling of not being able to reach anyone stuck with me.
+              </p>
+              <p className="text-foreground/90 leading-relaxed mb-6">
+                Most clinics aren't missing calls because they don't care — they're just stretched thin, and the phone is usually the first thing to suffer. I built Sera so pet owners never sit with that same helpless feeling, and clinics never lose a patient simply because nobody could pick up in time.
+              </p>
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-blue-500 flex items-center justify-center text-white font-bold text-sm">
+                  A
+                </div>
+                <div>
+                  <div className="font-semibold text-sm">Aaron</div>
+                  <div className="text-xs text-muted-foreground">Founder, Sera AI</div>
+                </div>
+              </div>
+            </div>
+          </FadeIn>
+        </div>
+      </section>
+
       {/* — 7. DEMO BOOKING SECTION — */}
       <section id="demo" className="py-24 px-6 bg-secondary/20 border-t border-border/50 relative overflow-hidden">
         <div className="absolute top-[10%] left-[10%] w-[30%] h-[30%] bg-primary/10 blur-[110px] rounded-full pointer-events-none" />
@@ -988,8 +1017,9 @@ export default function Home() {
             </div>
             <span className="text-lg font-bold tracking-tight">Sera AI</span>
           </div>
-          <div className="text-sm text-muted-foreground">
-            © {new Date().getFullYear()} Sera AI. Designed exclusively for Australian Vet Clinics.
+          <div className="text-sm text-muted-foreground text-center">
+            <div>© {new Date().getFullYear()} Sera AI. Australian owned and operated.</div>
+            <a href="mailto:aaron@seraai.co" className="hover:text-foreground transition-colors">aaron@seraai.co</a>
           </div>
           <div className="flex gap-6 text-sm text-muted-foreground">
             <a href="#" className="hover:text-foreground transition-colors">Privacy Policy</a>
