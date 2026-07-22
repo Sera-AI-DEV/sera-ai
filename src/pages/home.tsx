@@ -299,7 +299,6 @@ const TESTIMONIALS = [
     clinic: "Receptionist, Southern Cross Vets Surry Hills",
     rating: 5,
   },
-  },
 ];
 
 const FAQS = [
