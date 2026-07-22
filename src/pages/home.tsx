@@ -282,22 +282,23 @@ function ROICalculator() {
 
 const TESTIMONIALS = [
   {
-    quote: "We were losing at least 25 calls a week during lunch and after hours. Sera caught every single one in the first week. The team barely noticed she was there — the patients certainly didn't.",
-    name: "Dr. Sarah Mitchell",
-    clinic: "Bayside Animal Hospital, Melbourne",
+    quote: "Sera has taken so much pressure off the front desk. Calls that used to go to voicemail during our busiest periods now get answered properly, and clients still get the same warm experience they're used to.",
+    name: "Clare",
+    clinic: "Practice Manager, Southern Cross Vets",
     rating: 5,
   },
   {
-    quote: "I was sceptical at first — I didn't think an AI could handle our clinic's specific questions. But she answered everything perfectly. Even knew our parking situation. Honestly impressive.",
-    name: "James Thornton",
-    clinic: "Northside Vets, Brisbane",
+    quote: "It's been a relief having Sera pick up when we're flat out with clients in the clinic. She handles the booking questions so I can actually focus on the people in front of me.",
+    name: "Maria",
+    clinic: "Receptionist, Southern Cross Vets Eastern Suburbs",
     rating: 5,
   },
   {
-    quote: "Within the first fortnight Sera had booked over 60 appointments that would have gone to voicemail. At $120 a consult that's a significant return. Setup took less than 48 hours.",
-    name: "Dr. Priya Nair",
-    clinic: "Peninsula Pet Clinic, Sydney",
+    quote: "I was surprised how natural she sounds on the phone. Clients don't seem to mind at all, and it means we're not missing calls when everyone's already on the line.",
+    name: "Vanessa",
+    clinic: "Receptionist, Southern Cross Vets Surry Hills",
     rating: 5,
+  },
   },
 ];
 
@@ -890,9 +891,9 @@ export default function Home() {
           <FadeIn>
             <div className="text-center mb-14">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4 border border-primary/20">
-                <Users className="w-4 h-4" /> Clinic Owners
+                <Users className="w-4 h-4" /> Real Feedback
               </div>
-              <h2 className="text-3xl lg:text-4xl font-bold">What vet clinics are saying</h2>
+              <h2 className="text-3xl lg:text-4xl font-bold">What the team at Southern Cross Vets is saying</h2>
             </div>
           </FadeIn>
           <div className="grid md:grid-cols-3 gap-6">
